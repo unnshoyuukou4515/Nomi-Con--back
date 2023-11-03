@@ -10,8 +10,8 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const app = express();
 
-console.log("DB:", process.env.DEVELOPMENT_DB);
-console.log('knexConfig', knexConfig.development); // development設定を出力してみる
+// console.log("DB:", process.env.DEVELOPMENT_DB);
+// console.log('knexConfig', knexConfig.development); // development設定を出力してみる
 
 
 // CORS設定（必要に応じてオプションを設定）
