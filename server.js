@@ -1,11 +1,18 @@
 // IMPORTING MODULES
+// IMPORTING MODULES
+require('dotenv').config({ path: './.env.local' });
 const express = require('express');
-const knex = require('knex')(require('./knexfile.js')); // knexfile.jsは設定済みと仮定
+const knexConfig = require('./knexfile.js'); // knexfile.jsの設定を読み込む
+const knex = require('knex')(knexConfig.development); // knexを初期化する
 const bodyParser = require('body-parser');
-const axios = require('axios'); // HTTPリクエストを送るためのライブラリ
-const cookieParser = require('cookie-parser'); // Cookieを扱うためのミドルウェア
-const cors = require('cors'); // CORSを許可するためのミドルウェア
+const axios = require('axios');
+const cookieParser = require('cookie-parser');
+const cors = require('cors');
 const app = express();
+
+console.log("DB:", process.env.DEVELOPMENT_DB);
+console.log('knexConfig', knexConfig.development); // development設定を出力してみる
+
 
 // CORS設定（必要に応じてオプションを設定）
 app.use(cors({

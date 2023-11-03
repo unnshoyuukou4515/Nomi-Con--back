@@ -1,21 +1,21 @@
-const knex = require("../knex")
+const knexConfig = require('../../knexfile');
 
 //
 //for Log-In
 module.exports ={
     //Search DB by Username 
     getDataByUsername(username){
-        return knex('account').where({ username: username }).first()
+        return knex('users').where({ username: username }).first()
     },
 
     // Search DB by email
     getDataByEmail(email){
-        return knex('account').where({ email: email }).first()
+        return knex('users').where({ email: email }).first()
     },
 
     //Create Account
     createNewAccount(newAccountData){
-        return knex('account').insert({
+        return knex('users').insert({
             username: newAccountData.username,
             hash_salted_password: newAccountData.hashSaltedPassword,
             salt: newAccountData.salt,

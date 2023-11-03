@@ -6,13 +6,13 @@ require('dotenv').config({ path: './.env.local' });
  */
 module.exports = {
   development: {
-    client: 'postgresql', // PostgreSQLを指定
+    client: 'pg', // PostgreSQLを指定
     connection: {
-      database: process.env.DEVELOPMENT_DB,
-      user:     process.env.DEVELOPMENT_USER,
-      password: process.env.DEVELOPMENT_PASSWORD,
-      host:     process.env.DEVELOPMENT_HOST,
-      port:     process.env.DEVELOPMENT_PORT
+      database: "solo1",
+      user:     process.env.DEVELOPMENT_USER||"postgres",
+      password: process.env.DEVELOPMENT_PASSWORD||4515,
+      host:     process.env.DEVELOPMENT_HOST||"127.0.0.1",
+      port:     process.env.DEVELOPMENT_PORT||"5432"
     },
     migrations: {
       directory: __dirname + '/db/migrations'
@@ -23,7 +23,7 @@ module.exports = {
   },
 
   staging: {
-    client: 'postgresql', // PostgreSQLを指定
+    client: 'pg', // PostgreSQLを指定
     connection: {
       database: process.env.STAGING_DB,
       user:     process.env.STAGING_USER,
@@ -35,7 +35,7 @@ module.exports = {
       directory: __dirname + '/db/migrations'
     },
     seeds: {
-      directory: __dirname + '/db/seeds/staging'
+      directory: __dirname + '/db/seeds/developent'
     }
   },
 
