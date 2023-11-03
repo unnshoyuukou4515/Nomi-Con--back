@@ -1,4 +1,4 @@
-const accountModel = require("./account-model");
+const accountModel = require("./accountModel");
 const crypto = require("crypto");
 const session = require("express-session")
 const express = require("express")
