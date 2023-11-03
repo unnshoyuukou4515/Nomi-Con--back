@@ -8,9 +8,9 @@ exports.seed = function(knex) {
     .then(function () {
       // Inserts seed entries
       return knex('visited_restaurants').insert([
-        {user_id: 1, restaurant_id: 'r12345', rating: 4, visited_at: new Date()},
-        {user_id: 1, restaurant_id: 'r12346', rating: 5, visited_at: new Date()},
-        // 他の訪問記録データを追加
+        // {user_id: 1, restaurant_id: 'r12345', rating: 4, visited_at: new Date()},
+        // {user_id: 1, restaurant_id: 'r12346', rating: 5, visited_at: new Date()},
+       
       ]);
     });
 };
