@@ -41,7 +41,9 @@ module.exports = {
 
   production: {
     client: 'postgresql',
-    connection: process.env.DATABASE_URL, // Herokuが提供する環境変数を使用
+    connection: {
+      connectionString:process.env.DATABASE_URL, // Herokuが提供する環境変数を使用
+    ssl: { rejectUnauthorized: false }},
     migrations: {
       directory: __dirname + '/db/migrations'
     },
