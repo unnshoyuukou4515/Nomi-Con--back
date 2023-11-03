@@ -135,5 +135,7 @@ app.post('/api/markAsEaten', async (req, res) => {
 
 
 // INITIATE SERVER
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`server is listening on port ${PORT}`))
+const port = process.env.PORT || 3000; // Herokuが割り当てるポート、またはローカルのポート3000
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
