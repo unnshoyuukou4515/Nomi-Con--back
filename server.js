@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const crypto = require('crypto');
 const app = express();
 
 // console.log("DB:", process.env.DEVELOPMENT_DB);
@@ -25,19 +26,73 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-// IMPORTING DATABASE CONTROLLER
-const accountController = require("./src/account/accountController");
+
 
 // VERIFIED END POINTS
 // ACCOUNT CONTROLLER
-app.post("/createNewAccount", accountController.createNewAccount);
-  // to access: localhost:8080/createNewAccount
-  // body, raw, json
-  // ex: {"username": "usernametest1", "password": "passwordtest1", "email": "email@gmail.comtest1", "firstName": "firstnametest1", "lastName": "lastnametest1"}
-app.post("/login", accountController.login);
-  // to access: localhost:8080/login
-  // body, raw, json
-  // ex: {"username": "usernametest1", "password": "passwordtest1"}
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+
+// Helper functions
+function generateSessionToken() {
+  return crypto.randomBytes(16).toString('hex');
+}
+
+function hashPassword(password, salt) {
+  return crypto.createHash('sha256').update(salt + password).digest('hex');
+}
+
+// Routes
+app.post('/api/createNewAccount', async (req, res) => {
+  try {
+    const { username, password, email } = req.body;
+    // Check if the username or email already exists
+    const existingUser = await knex('users').where({ username }).orWhere({ email }).first();
+    if (existingUser) {
+      return res.status(409).send('Username or Email already exists.');
+    }
+
+    // Hash password
+    const salt = crypto.randomBytes(16).toString('hex');
+    const hashedPassword = hashPassword(password, salt);
+
+    // Insert the new user into the database
+    await knex('users').insert({
+      username,
+      hash_salted_password: hashedPassword,
+      salt,
+      email
+    });
+
+    res.status(201).send('Account created.');
+  } catch (error) {
+    res.status(500).send(`Server error: ${error.message}`);
+  }
+});
+
+app.post('/api/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    // Retrieve user from the database
+    const user = await knex('users').where({ username }).first();
+    if (!user) {
+      return res.status(401).send('Invalid Username or Password');
+    }
+
+    // Check password
+    const hashedInputPassword = hashPassword(password, user.salt);
+    if (hashedInputPassword !== user.hash_salted_password) {
+      return res.status(401).send('Invalid Username or Password');
+    }
+
+    // Create session or token here as needed
+    // For example, setting a cookie with a session token
+    // res.cookie("session_token", generateSessionToken(), { httpOnly: true });
+
+    res.status(200).send({ userId: user.id, username: user.username });
+  } catch (error) {
+    res.status(500).send(`Server error: ${error.message}`);
+  }
+});
 
 
 //HotPepper API 
