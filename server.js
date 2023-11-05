@@ -1,5 +1,4 @@
 // IMPORTING MODULES
-// IMPORTING MODULES
 require('dotenv').config({ path: './.env.local' });
 const express = require('express');
 const knexConfig = require('./knexfile.js'); // knexfile.jsの設定を読み込む
@@ -101,64 +100,46 @@ const HOTPEPPER_API_URL = 'http://webservice.recruit.co.jp/hotpepper/gourmet/v1/
 
 
 // HotPepper APIにアクセスする関数
-const fetchIzakayaRestaurants = async (latitude, longitude, range) => {
-    const params = {
-      key: HOTPEPPER_API_KEY,
-      lat: latitude,
-      lng: longitude,
-      range: range,
-      format: 'json'
-    };
-    
-    // APIにリクエスト
-    const response = await axios.get(HOTPEPPER_API_URL, { params });
-  
-    // 居酒屋のジャンルコード (G001) に一致するお店のみ
-    const izakayas = response.data.results.shop.filter(shop => 
-      shop.genre.code === 'G001'
-    );
-
-    return izakayas;
+const fetchIzakayaRestaurants = async (latitude, longitude) => {
+  const params = {
+    key: HOTPEPPER_API_KEY,
+    lat: latitude,
+    lng: longitude,
+    range: 2, // 検索範囲を500mに固定
+    format: 'json'
   };
   
-  // 現在位置周辺の居酒屋を検索するエンドポイント
-  app.get('/api/izakayas', async (req, res) => {
-    const { latitude, longitude, range } = req.query;
-    try {
-      const izakayas = await fetchIzakayaRestaurants(latitude, longitude, range);
-      res.json(izakayas);
-    } catch (error) {
-      res.status(500).json({ message: 'サーバーエラーが発生しました。', error: error.message });
-    }
-  });
-  
-  // 指定した駅の居酒屋を検索するエンドポイント
-app.get('/api/izakayasByStation', async (req, res) => {
-    const { station_name } = req.query;
-    try {
-      const params = {
-        key: HOTPEPPER_API_KEY,
-        format: 'json',
-        // 他に必要な検索パラメータがあればここに追加します。
-      };
-  
-      // HotPepper APIにリクエストを送ります
-      const response = await axios.get(HOTPEPPER_API_URL, { params });
-      const allRestaurants = response.data.results.shop;
-  
-      // `access`情報とジャンルコードに基づいてフィルタリング
-      const izakayas = allRestaurants.filter(shop =>
-        shop.access && shop.access.includes(station_name) && shop.genre.code === 'G001'
-      );
-  
-      res.json(izakayas);
-    } catch (error) {
-      res.status(500).json({ message: 'サーバーエラーが発生しました。', error: error.message });
-    }
-  });
+  // APIにリクエスト
+  const response = await axios.get(HOTPEPPER_API_URL, { params });
+  // 居酒屋のジャンルコード (G001) に一致するお店のみをフィルター
+  const izakayas = response.data.results.shop.filter(shop => 
+    shop.genre.code === 'G001'
+  );
 
+  return izakayas;
+};
 
+// 現在位置周辺の居酒屋を検索するエンドポイント
+app.get('/api/izakayas', async (req, res) => {
+  const { latitude, longitude } = req.query;
+  try {
+    const izakayas = await fetchIzakayaRestaurants(latitude, longitude);
+    res.json(izakayas);
+  } catch (error) {
+    res.status(500).json({ message: 'サーバーエラーが発生しました。', error: error.message });
+  }
+});
 
+// 指定した緯度経度の周辺の居酒屋を検索するエンドポイント
+app.get('/api/izakayasNearby', async (req, res) => {
+  const { latitude, longitude } = req.query;
+  try {
+    const izakayas = await fetchIzakayaRestaurants(latitude, longitude);
+    res.json(izakayas);
+  } catch (error) {
+    res.status(500).json({ message: 'サーバーエラーが発生しました。', error: error.message });
+  }
+});
 
 
 
@@ -185,13 +166,23 @@ app.post('/api/markAsEaten', async (req, res) => {
     }
   });
   
+// ユーザーの訪問済みレストランIDを取得するルート
+app.get('/user/:userId/visited-restaurant-ids', async (req, res) => {
+  const userId = req.params.userId;
 
+  try {
+      // 'visited_restaurants'テーブルから'user_id'に一致する'restaurant_id'のみを取得
+      const visitedRestaurantIds = await knex('visited_restaurants')
+          .where('user_id', userId)
+          .select('restaurant_id');
 
-  // エラーハンドリングミドルウェア
-  app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
-  });
+      // 結果を返す
+      res.json(visitedRestaurantIds);
+  } catch (err) {
+      // エラーレスポンスを返す
+      res.status(500).send("Internal Server Error");
+  }
+});
 
 
 
