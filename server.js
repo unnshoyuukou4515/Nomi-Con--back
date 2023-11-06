@@ -184,6 +184,19 @@ app.get('/api/user/:userId/visited-izakayas', async (req, res) => {
 });
 
 
+app.get('/api/search-by-id/:restaurantId', async (req, res) => {
+  const { restaurantId } = req.params;
+
+  try {
+    const url = `${HOTPEPPER_API_URL}?key=${HOTPEPPER_API_KEY}&id=${restaurantId}&format=json`;
+    const response = await axios.get(url);
+    res.json(response.data);
+  } catch (error) {
+    console.error('Error fetching restaurant data:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 
 
 // INITIATE SERVER
