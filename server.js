@@ -14,7 +14,6 @@ const app = express();
 // console.log('knexConfig', knexConfig.development); // development設定を出力してみる
 
 
-// CORS設定（必要に応じてオプションを設定）
 app.use(cors({
   // 例: originを設定して、特定のドメインからのアクセスのみを許可する
   // origin: 'http://example.com'
@@ -87,7 +86,7 @@ app.post('/api/login', async (req, res) => {
     // For example, setting a cookie with a session token
     // res.cookie("session_token", generateSessionToken(), { httpOnly: true });
 
-    res.status(200).send({ userId: user.id, username: user.username });
+    res.status(200).send({ userId: user.user_idid, username: user.username });
   } catch (error) {
     res.status(500).send(`Server error: ${error.message}`);
   }
@@ -167,7 +166,7 @@ app.post('/api/markAsEaten', async (req, res) => {
   });
   
 // ユーザーの訪問済みレストランIDを取得するルート
-app.get('/user/:userId/visited-restaurant-ids', async (req, res) => {
+app.get('/api/user/:userId/visited-izakayas', async (req, res) => {
   const userId = req.params.userId;
 
   try {
