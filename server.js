@@ -86,7 +86,7 @@ app.post('/api/login', async (req, res) => {
     // For example, setting a cookie with a session token
     // res.cookie("session_token", generateSessionToken(), { httpOnly: true });
 
-    res.status(200).send({ userId: user.user_idid, username: user.username });
+    res.status(200).send({ userId: user.user_id, username: user.username });
   } catch (error) {
     res.status(500).send(`Server error: ${error.message}`);
   }
