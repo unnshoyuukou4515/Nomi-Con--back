@@ -185,6 +185,7 @@ app.get('/api/search-by-id/:restaurantId', async (req, res) => {
 });
 
 app.get('/api/test',async (req, res) => {
+  res.status(200).json({ message: 'add。' });
   console.log("test")
   })
 
