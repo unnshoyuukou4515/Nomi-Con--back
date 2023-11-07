@@ -41,7 +41,7 @@ module.exports = {
 
   production: {
     client: 'pg',
-    connection: process.env.DATABASE_URL, // Herokuの環境変数から接続URLを取得
+    connection: process.env.DATABASE_URL+ "?sslmode=require", // Herokuの環境変数から接続URLを取得
     pool: {
       min: 2,
       max: 10
