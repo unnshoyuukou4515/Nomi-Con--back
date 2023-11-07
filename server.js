@@ -184,7 +184,9 @@ app.get('/api/search-by-id/:restaurantId', async (req, res) => {
   }
 });
 
-
+app.get('/api/test',async (req, res) => {
+  console.log("test")
+  })
 
 // INITIATE SERVER
 const port = process.env.PORT || 3000; // Herokuが割り当てるポート、またはローカルのポート3000
