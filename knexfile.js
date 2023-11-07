@@ -1,5 +1,9 @@
 // Update with your config settings.
 require('dotenv').config({ path: './.env.local' });
+const pg = require('pg');
+
+pg.defaults.ssl = process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false;
+
 
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
