@@ -41,22 +41,19 @@ module.exports = {
 
   production: {
     client: 'pg',
-    connection: "postgres://unnsho:r9CQzAzgrJkF2OINVI0PkBul4Cgiw2zT@dpg-cl5avp28vr0c73amt680-a/solo1"||{
-      host: process.env.RENDER_EXTERNAL_HOST ,
-      port: process.env.RENDER_EXTERNAL_PORT || 5432,
-      user: process.env.POSTGRES_USER ,
-      database: process.env.POSTGRES_DB ,
-      password: process.env.POSTGRES_PASSWORD,
-    },
-    migrations: {
-      directory: __dirname + '/db/migrations'
-    },
-    seeds: {
-      directory: __dirname + '/db/seeds/development'
-    },
+    connection: process.env.DATABASE_URL, // Herokuの環境変数から接続URLを取得
     pool: {
       min: 2,
       max: 10
-    }
+    },
+    migrations: {
+      tableName: 'knex_migrations',
+      directory: './db/migrations',
+    },
+    seeds: {
+      directory: './db/seeds/production',
+    },
+    ssl: { rejectUnauthorized: false } // HerokuのSSL設定
+  
   }
 };
