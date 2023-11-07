@@ -41,9 +41,13 @@ module.exports = {
 
   production: {
     client: 'pg',
-    connection: {
-      connectionString:process.env.DATABASE_URL, 
-    ssl: { rejectUnauthorized: false }},
+    connection: "postgres://unnsho:r9CQzAzgrJkF2OINVI0PkBul4Cgiw2zT@dpg-cl5avp28vr0c73amt680-a/solo1"||{
+      host: process.env.RENDER_EXTERNAL_HOST ,
+      port: process.env.RENDER_EXTERNAL_PORT || 5432,
+      user: process.env.POSTGRES_USER ,
+      database: process.env.POSTGRES_DB ,
+      password: process.env.POSTGRES_PASSWORD,
+    },
     migrations: {
       directory: __dirname + '/db/migrations'
     },
