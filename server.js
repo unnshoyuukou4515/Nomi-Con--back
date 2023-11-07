@@ -103,15 +103,14 @@ const fetchIzakayaRestaurants = async (latitude, longitude) => {
     key: HOTPEPPER_API_KEY,
     lat: latitude,
     lng: longitude,
-    range: "5",
+    range: "3",
     format: 'json'
   };
   
-  
   const response = await axios.get(HOTPEPPER_API_URL, { params });
-  // 居酒屋のコード はG001 
+  // 居酒屋のコード はG001 barはG012
   const izakayas = response.data.results.shop.filter(shop => 
-    shop.genre.code === 'G001'||shop.genre.code === 'G012'
+    shop.genre.code === 'G001'||shop.genre.code === 'G012'||shop.genre.code === 'G002'
   );
 
   return izakayas;
@@ -123,22 +122,11 @@ app.get('/api/izakayas', async (req, res) => {
   try {
     const izakayas = await fetchIzakayaRestaurants(latitude, longitude);
     res.json(izakayas);
+    // console.log(izakayas)
   } catch (error) {
-    res.status(500).json({ message: 'サーバーエラーが発生しました。', error: error.message });
+    res.status(500).json({ message: 'servererro', error: error.message });
   }
 });
-
-// 指定した緯度経度の周辺の居酒屋を検索するエンドポイント
-app.get('/api/izakayasNearby', async (req, res) => {
-  const { latitude, longitude } = req.query;
-  try {
-    const izakayas = await fetchIzakayaRestaurants(latitude, longitude);
-    res.json(izakayas);
-  } catch (error) {
-    res.status(500).json({ message: 'サーバーエラーが発生しました。', error: error.message });
-  }
-});
-
 
 
 //レストラン履歴をセーブする
@@ -149,7 +137,7 @@ app.post('/api/markAsEaten', async (req, res) => {
       // ユーザーIDがデータベースに存在するかチェック
       const user = await knex('users').where({ user_id }).first();
       if (!user) {
-        return res.status(404).json({ message: 'ユーザーが見つかりません。' });
+        return res.status(404).json({ message: 'no user found' });
       }
       await knex('visited_restaurants').insert({
         user_id: user_id,
@@ -158,9 +146,9 @@ app.post('/api/markAsEaten', async (req, res) => {
         visited_at: visited_at
       });
       
-      res.status(200).json({ message: 'レストランが「食べた」リストに追加されました。' });
+      res.status(200).json({ message: 'add to the database。' });
     } catch (error) {
-      res.status(500).json({ message: 'データの保存中にエラーが発生しました。', error: error.message });
+      res.status(500).json({ message: 'faild to add in database', error: error.message });
     }
   });
   
@@ -177,7 +165,7 @@ app.get('/api/user/:userId/visited-izakayas', async (req, res) => {
       // 結果を返す
       res.json(visitedRestaurantIds);
   } catch (err) {
-      // エラーレスポンスを返す
+      // エラー
       res.status(500).send("Internal Server Error");
   }
 });
