@@ -207,6 +207,20 @@ app.get('/test',async (req, res) => {
   console.log("test")
   })
 
+  app.get('/test2',async (req, res) => {
+    try {
+      // 'visited_restaurants'テーブルから'user_id'に一致する'restaurant_id'のみを取得
+      const visitedRestaurantIds = await knex('visited_restaurants')
+          .select('restaurant_id');
+
+      // 結果を返す
+      res.json(visitedRestaurantIds);
+  } catch (err) {
+      // エラー
+      res.status(500).send("Internal Server Error");
+  }
+    })
+
 // INITIATE SERVER
 const port = process.env.PORT || 3000; // Herokuが割り当てるポート、またはローカルのポート3000
 app.listen(port, () => {
