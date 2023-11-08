@@ -8,7 +8,7 @@ module.exports = {
   production: {
     client: 'pg',
     connection: {
-      connectionString:"postgres://swqnoghdlppttp:2afd14ebe48147be2e449d2d481ca0b14f3a780863553ecf3b544186cdaf213a@ec2-3-216-4-251.compute-1.amazonaws.com:5432/d1atfk2el7k7ndprocess.env.DATABASE_URL", // Herokuの環境変数から接続URLを取得
+      connectionString: process.env.DATABASE_URL, // Herokuの環境変数から接続URLを取得
       ssl: { rejectUnauthorized: false } // HerokuのSSL設定を無効化
     },
     pool: {
@@ -21,6 +21,40 @@ module.exports = {
     },
     seeds: {
       directory: './db/seeds/production',
+    }
+  },
+
+  development: {
+    client: 'pg', // PostgreSQLを指定
+    connection: {
+      database: "solo1",
+      user:     process.env.DEVELOPMENT_USER||"postgres",
+      password: process.env.DEVELOPMENT_PASSWORD||"4515",
+      host:     process.env.DEVELOPMENT_HOST||"127.0.0.1",
+      port:     process.env.DEVELOPMENT_PORT||"5432"
+    },
+    migrations: {
+      directory: __dirname + '/db/migrations'
+    },
+    seeds: {
+      directory: __dirname + '/db/seeds/development'
+    }
+  },
+
+  staging: {
+    client: 'pg', // PostgreSQLを指定
+    connection: {
+      database: process.env.STAGING_DB,
+      user:     process.env.STAGING_USER,
+      password: process.env.STAGING_PASSWORD,
+      host:     process.env.STAGING_HOST,
+      port:     process.env.STAGING_PORT
+    },
+    migrations: {
+      directory: __dirname + '/db/migrations'
+    },
+    seeds: {
+      directory: __dirname + '/db/seeds/developent'
     }
   },
 
