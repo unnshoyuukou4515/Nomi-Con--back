@@ -12,10 +12,10 @@ const app = express();
 
 // console.log("DB:", process.env.DEVELOPMENT_DB);
 // console.log('knexConfig', knexConfig.development); // development設定を出力してみる
-console.log(process.env.DATABASE_URL); 
-console.log(process.env.PRODUCTION_PASSWORD)
-console.log(process.env.PRODUCTION_USER)
-console.log(process.env.PRODUCTION_DB)
+// console.log(process.env.DATABASE_URL); 
+// console.log(process.env.PRODUCTION_PASSWORD)
+// console.log(process.env.PRODUCTION_USER)
+// console.log(process.env.PRODUCTION_DB)
 
 
 app.use(
@@ -23,12 +23,12 @@ app.use(
     origin: [
       "https://solo-pj-front-n23wqu793-unnshoyuukou4515s-projects.vercel.app",
       "https://solo-pj-front.vercel.app",
-      "https://nomi-con-backend.onrender.com",
       "http://localhost:3000",
       "http://localhost:5173",
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
+    optionsSuccessStatus: 200 // サポートの古いブラウザに対応する
   })
 );
 //  '' '' '' '' ''
