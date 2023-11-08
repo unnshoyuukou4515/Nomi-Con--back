@@ -39,7 +39,7 @@ function hashPassword(password, salt) {
 }
 
 // Routes
-app.post('/api/createNewAccount', async (req, res) => {
+app.post('/createNewAccount', async (req, res) => {
   try {
     const { username, password, email } = req.body;
     // Check if the username or email already exists
@@ -66,7 +66,7 @@ app.post('/api/createNewAccount', async (req, res) => {
   }
 });
 
-app.post('/api/login', async (req, res) => {
+app.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
     // Retrieve user from the database
@@ -117,7 +117,7 @@ const fetchIzakayaRestaurants = async (latitude, longitude) => {
 };
 
 // 現在位置周辺の居酒屋を検索するエンドポイント
-app.get('/api/izakayas', async (req, res) => {
+app.get('/izakayas', async (req, res) => {
   const { latitude, longitude } = req.query;
   try {
     const izakayas = await fetchIzakayaRestaurants(latitude, longitude);
@@ -130,7 +130,7 @@ app.get('/api/izakayas', async (req, res) => {
 
 
 //レストラン履歴をセーブする
-app.post('/api/markAsEaten', async (req, res) => {
+app.post('/markAsEaten', async (req, res) => {
     const { user_id, restaurant_id, rating, visited_at } = req.body;
     
     try {
@@ -153,7 +153,7 @@ app.post('/api/markAsEaten', async (req, res) => {
   });
   
 // ユーザーの訪問済みレストランIDを取得するルート
-app.get('/api/user/:userId/visited-izakayas', async (req, res) => {
+app.get('/user/:userId/visited-izakayas', async (req, res) => {
   const userId = req.params.userId;
 
   try {
@@ -171,7 +171,7 @@ app.get('/api/user/:userId/visited-izakayas', async (req, res) => {
 });
 
 
-app.get('/api/search-by-id/:restaurantId', async (req, res) => {
+app.get('/search-by-id/:restaurantId', async (req, res) => {
   const { restaurantId } = req.params;
 
   try {
@@ -184,7 +184,7 @@ app.get('/api/search-by-id/:restaurantId', async (req, res) => {
   }
 });
 
-app.get('/api/test',async (req, res) => {
+app.get('/test',async (req, res) => {
   res.status(200).json({ message: 'add。' });
   console.log("test")
   })
