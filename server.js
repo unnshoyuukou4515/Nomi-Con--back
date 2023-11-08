@@ -109,8 +109,7 @@ app.post("/login", async (req, res) => {
 
 //HotPepper API
 const HOTPEPPER_API_KEY = "54ff6a2bad6c6ffb";
-const HOTPEPPER_API_URL =
-  "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/";
+const HOTPEPPER_API_URL = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/";
 
 // HotPepper APIにアクセスする関数
 const fetchIzakayaRestaurants = async (latitude, longitude) => {
@@ -215,6 +214,7 @@ app.get("/testfordb", async (req, res) => {
   } catch (err) {
     // エラー
     res.status(500).send("Internal Server Error");
+    console.log(err)
   }
 });
 
