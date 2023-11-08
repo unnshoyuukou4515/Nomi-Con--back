@@ -7,9 +7,12 @@ require('dotenv').config({ path: './.env.local' });
 module.exports = {  
   production: {
     client: 'pg',
-    connection: {
-      connectionString: process.env.DATABASE_URL, // Herokuの環境変数から接続URLを取得
-      ssl: { rejectUnauthorized: false } // HerokuのSSL設定を無効化
+    connection: process.env.DATABASE_URL||{
+      host: process.env.RENDER_EXTERNAL_HOST ,
+      port: process.env.RENDER_EXTERNAL_PORT || 5432,
+      user: process.env.POSTGRES_USER ,
+      database: process.env.POSTGRES_DB ,
+      password: process.env.POSTGRES_PASSWORD,
     },
     pool: {
       min: 2,
