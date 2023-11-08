@@ -12,7 +12,8 @@ module.exports = {
       user:     process.env.PRODUCTION_USER,
       password: process.env.PRODUCTION_PASSWORD,
       host:     process.env.PRODUCTION_HOST,
-      port:     process.env.PRODUCTION_PORT
+      port:     process.env.PRODUCTION_PORT,
+      ssl: { rejectUnauthorized: false } 
     },
     pool: {
       min: 2,
