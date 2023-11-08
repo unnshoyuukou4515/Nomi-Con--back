@@ -15,11 +15,11 @@ const app = express();
 
 
 app.use(cors({
-  origin:  ['https://solo-pj-front-n23wqu793-unnshoyuukou4515s-projects.vercel.app','https://solo-pj-front.vercel.app','https://solo-pj-front.vercel.app/register','https://nomi-con-backend.onrender.com','http://localhost:3000','http://localhost:5173'],
+  origin:  ['https://nomi-con-backend.onrender.com/login','https://nomi-con-backend.onrender.com/createNewAccount','https://solo-pj-front-n23wqu793-unnshoyuukou4515s-projects.vercel.app','https://solo-pj-front.vercel.app','https://solo-pj-front.vercel.app/register','https://nomi-con-backend.onrender.com','http://localhost:3000','http://localhost:5173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
-
+// 'https://nomi-con-backend.onrender.com/login' '' '' '' '' '' ''
 // USING MIDDLEWARE
 app.use(express.json());
 app.use(cookieParser());
