@@ -7,13 +7,9 @@ require('dotenv').config({ path:'./.env.local'});
 module.exports = {  
   production: {
     client: 'pg',
-    connection: process.env.DATABASE_URL||{
-      database: process.env.PRODUCTION_DB,
-      user:     process.env.PRODUCTION_USER,
-      password: process.env.PRODUCTION_PASSWORD,
-      host:     process.env.PRODUCTION_HOST,
-      port:     process.env.PRODUCTION_PORT,
-      ssl: { rejectUnauthorized: false } 
+    connection: {
+      connectionString: process.env.DATABASE_URL, 
+      ssl: { rejectUnauthorized: true } 
     },
     pool: {
       min: 2,
