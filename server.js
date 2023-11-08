@@ -15,6 +15,9 @@ const app = express();
 console.log(process.env.DATABASE_URL); 
 console.log(process.env.POSTGRES_PASSWORD)
 console.log(process.env.POSTGRES_USER)
+console.log(process.env.POSTGRES_DB)
+
+
 app.use(
   cors({
     origin: [
