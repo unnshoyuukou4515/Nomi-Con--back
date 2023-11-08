@@ -12,6 +12,8 @@ const app = express();
 
 // console.log("DB:", process.env.DEVELOPMENT_DB);
 // console.log('knexConfig', knexConfig.development); // development設定を出力してみる
+console.log(process.env.DATABASE_URL); 
+console.log(process.env.POSTGRES_PASSWORD)
 
 app.use(
   cors({
