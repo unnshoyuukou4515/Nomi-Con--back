@@ -10,7 +10,7 @@ module.exports = {
     connection: process.env.DATABASE_URL||{
       host: process.env.RENDER_EXTERNAL_HOST ,
       port: process.env.RENDER_EXTERNAL_PORT || 5432,
-      user: process.env.POSTGRES_USER ,
+      user: process.env.POSTGRES_USER||unnsho ,
       database: process.env.POSTGRES_DB ,
       password: process.env.POSTGRES_PASSWORD,
     },
@@ -43,7 +43,4 @@ module.exports = {
       directory: __dirname + '/db/seeds/development'
     }
   },
-
-
-
 };
