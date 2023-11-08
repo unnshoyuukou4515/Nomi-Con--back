@@ -15,7 +15,7 @@ const app = express();
 
 
 app.use(cors({
-  origin:  ['https://solo-pj-front-n23wqu793-unnshoyuukou4515s-projects.vercel.app', 'http://localhost:3000'],
+  origin:  ['https://solo-pj-front-n23wqu793-unnshoyuukou4515s-projects.vercel.app','https://nomi-con-backend.onrender.com','http://localhost:3000','http://localhost:5173'],
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'],
 }));
