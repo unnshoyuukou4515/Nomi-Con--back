@@ -28,7 +28,7 @@ app.use(
     ],
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-    optionsSuccessStatus: 200 // サポートの古いブラウザに対応する
+    credentials: true
   })
 );
 //  '' '' '' '' ''
@@ -81,7 +81,7 @@ app.post("/createNewAccount", async (req, res) => {
     res.status(201).send("Account created.");
   } catch (error) {
     res.status(500).send(`Server error: ${error.message}`);
-    console.log(error);
+    // console.log(error);
   }
 });
 
@@ -103,6 +103,7 @@ app.post("/login", async (req, res) => {
     res.status(200).send({ userId: user.user_id, username: user.username });
   } catch (error) {
     res.status(500).send(`Server error: ${error.message}`);
+    console.log(error)
   }
 });
 
@@ -207,8 +208,8 @@ app.get("/test", async (req, res) => {
 
 app.get("/testfordb", async (req, res) => {
   try {
-    const visitedRestaurantIds = await knex("visited_restaurants").select(
-      "restaurant_id"
+    const visitedRestaurantIds = await knex("users").select(
+      
     );
     res.json(visitedRestaurantIds);
   } catch (err) {

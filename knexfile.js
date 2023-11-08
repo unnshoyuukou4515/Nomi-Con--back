@@ -9,7 +9,7 @@ module.exports = {
     client: 'pg',
     connection: {
       connectionString: process.env.DATABASE_URL, 
-      ssl: { rejectUnauthorized: true } 
+      ssl: { rejectUnauthorized: false } 
     },
     pool: {
       min: 2,
@@ -30,7 +30,7 @@ module.exports = {
       database: "solo1",
       user:     process.env.DEVELOPMENT_USER||"postgres",
       password: process.env.DEVELOPMENT_PASSWORD||"4515",
-      host:     process.env.DEVELOPMENT_HOST,
+      host:     process.env.DEVELOPMENT_HOST||"localhost",
       port:     process.env.DEVELOPMENT_PORT||"5432"
     },
     migrations: {
