@@ -208,7 +208,7 @@ app.get("/test", async (req, res) => {
   console.log("test");
 });
 
-app.get("/test2", async (req, res) => {
+app.get("/testfordb", async (req, res) => {
   try {
     const visitedRestaurantIds = await knex("visited_restaurants").select(
       "restaurant_id"
