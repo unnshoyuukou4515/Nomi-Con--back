@@ -18,22 +18,22 @@ console.log(process.env.POSTGRES_USER)
 console.log(process.env.POSTGRES_DB)
 
 
-app.use(
-  cors({
-    origin: [
-      "https://solo-pj-front-n23wqu793-unnshoyuukou4515s-projects.vercel.app",
-      "https://nomi-con-backend.onrender.com/createNewAccount",
-      "https://nomi-con-backend.onrender.com/login",
-      "https://solo-pj-front.vercel.app",
-      "https://solo-pj-front.vercel.app/register",
-      "https://nomi-con-backend.onrender.com",
-      "http://localhost:3000",
-      "http://localhost:5173",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-  })
-);
+// app.use(
+//   cors({
+//     origin: [
+//       "https://solo-pj-front-n23wqu793-unnshoyuukou4515s-projects.vercel.app",
+//       "https://nomi-con-backend.onrender.com/createNewAccount",
+//       "https://nomi-con-backend.onrender.com/login",
+//       "https://solo-pj-front.vercel.app",
+//       "https://solo-pj-front.vercel.app/register",
+//       "https://nomi-con-backend.onrender.com",
+//       "http://localhost:3000",
+//       "http://localhost:5173",
+//     ],
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//   })
+// );
 //  '' '' '' '' ''
 // USING MIDDLEWARE
 app.use(express.json());

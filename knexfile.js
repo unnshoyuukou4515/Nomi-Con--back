@@ -7,12 +7,12 @@ require('dotenv').config({ path:'./.env.local'});
 module.exports = {  
   production: {
     client: 'pg',
-    connection: process.env.DATABASE_URL||{
-      host: process.env.RENDER_EXTERNAL_HOST ,
-      port: process.env.RENDER_EXTERNAL_PORT || 5432,
-      user: process.env.POSTGRES_USER ,
-      database: process.env.POSTGRES_DB ,
-      password: process.env.POSTGRES_PASSWORD,
+    connection:{
+      database: process.env.PRODUCTION_DB,
+      user:     process.env.PRODUCTION_USER,
+      password: process.env.PRODUCTION_PASSWORD,
+      host:     process.env.PRODUCTION_HOST,
+      port:     process.env.PRODUCTION_PORT
     },
     pool: {
       min: 2,
