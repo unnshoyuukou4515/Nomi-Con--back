@@ -17,19 +17,21 @@ const app = express();
 app.use(cors());
 const allowedOrigins = [
   'https://solo-pj-front-git-main-unnshoyuukou4515s-projects.vercel.app',
-  'https://solo-pj-front-hmt8leki8-unnshoyuukou4515s-projects.vercel.app/',
+  'https://solo-pj-front-hmt8leki8-unnshoyuukou4515s-projects.vercel.app',
  
 ];
 
 const corsOptions = {
   origin: function (origin, callback) {
+    console.log(`Origin of request ${origin}`); // リクエストのオリジンをログ出力
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      callback(new Error('Not allowed by CORS'));
+      console.log('Not allowed by CORS'); // CORSによってブロックされたときのログ
+      callback(new Error('Not allowed by CORS'), false);
     }
   },
-  credentials: true, 
+  credentials: true, // クレデンシャルを許可
 };
 
 app.use(cors(corsOptions));
