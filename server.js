@@ -17,7 +17,7 @@ const app = express();
 app.use(cors());
 const allowedOrigins = [
   'https://solo-pj-front-git-main-unnshoyuukou4515s-projects.vercel.app',
-  'https://solo-pj-front-hmt8leki8-unnshoyuukou4515s-projects.vercel.app',
+  'https://solo-pj-front-jlwh838gb-unnshoyuukou4515s-projects.vercel.app'
  
 ];
 
