@@ -13,19 +13,16 @@ const app = express();
 // console.log("DB:", process.env.DEVELOPMENT_DB);
 // console.log('knexConfig', knexConfig.development); // development設定を出力してみる
 console.log(process.env.DATABASE_URL); 
-console.log(process.env.POSTGRES_PASSWORD)
-console.log(process.env.POSTGRES_USER)
-console.log(process.env.POSTGRES_DB)
+console.log(process.env.PRODUCTION_PASSWORD)
+console.log(process.env.PRODUCTION_USER)
+console.log(process.env.PRODUCTION_DB)
 
 
 app.use(
   cors({
     origin: [
       "https://solo-pj-front-n23wqu793-unnshoyuukou4515s-projects.vercel.app",
-      "https://nomi-con-backend.onrender.com/createNewAccount",
-      "https://nomi-con-backend.onrender.com/login",
       "https://solo-pj-front.vercel.app",
-      "https://solo-pj-front.vercel.app/register",
       "https://nomi-con-backend.onrender.com",
       "http://localhost:3000",
       "http://localhost:5173",
