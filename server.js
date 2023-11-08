@@ -14,9 +14,25 @@ const app = express();
 // console.log('knexConfig', knexConfig.development); // development設定を出力してみる
 
 
-app.use(cors({
+app.use(cors());
+const allowedOrigins = [
+  'https://solo-pj-front-git-main-unnshoyuukou4515s-projects.vercel.app',
+  'https://solo-pj-front-ofp033l8a-unnshoyuukou4515s-projects.vercel.app',
+ 
+];
 
-}));
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true, 
+};
+
+app.use(cors(corsOptions));
 
 // USING MIDDLEWARE
 app.use(express.json());
