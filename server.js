@@ -81,7 +81,7 @@ app.post("/createNewAccount", async (req, res) => {
     res.status(201).send("Account created.");
   } catch (error) {
     res.status(500).send(`Server error: ${error.message}`);
-    // console.log(error);
+    console.log(error);
   }
 });
 
