@@ -4,11 +4,14 @@ require('dotenv').config({ path:'./.env.local'});
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
+if (process.env.NODE_ENV === 'production') {
+  pg.defaults.ssl = { rejectUnauthorized: false };
+}
+
 module.exports = {  
   production: {
     client: 'pg',
-    connection: process.env.DATABASE_URL,
-    ssl: { rejectUnauthorized: true } ,
+    connection:process.env.DATABASE_URL ,
     pool: {
       min: 2,
       max: 10
