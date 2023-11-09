@@ -88,7 +88,6 @@ app.post("/login", async (req, res) => {
     if (!user) {
       return res.status(401).send("Invalid Username or Password");
     }
-
     // Check password
     const hashedInputPassword = hashPassword(password, user.salt);
     if (hashedInputPassword !== user.hash_salted_password) {
@@ -108,7 +107,7 @@ const HOTPEPPER_API_URL =
   "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/";
 
 // HotPepper APIにアクセスする関数
-const fetchIzakayaRestaurants = async (latitude, longitude) => {
+const fetchIzakaya = async (latitude, longitude) => {
   const params = {
     key: HOTPEPPER_API_KEY,
     lat: latitude,
@@ -133,11 +132,11 @@ const fetchIzakayaRestaurants = async (latitude, longitude) => {
 app.get("/izakayas", async (req, res) => {
   const { latitude, longitude } = req.query;
   try {
-    const izakayas = await fetchIzakayaRestaurants(latitude, longitude);
+    const izakayas = await fetchIzakaya(latitude, longitude);
     res.json(izakayas);
     // console.log(izakayas)
   } catch (error) {
-    res.status(500).json({ message: "servererro", error: error.message });
+    res.status(500).json({ message: "server error", error: error.message });
   }
 });
 
@@ -157,7 +156,6 @@ app.post("/markAsEaten", async (req, res) => {
       rating: rating,
       visited_at: visited_at,
     });
-
     res.status(200).json({ message: "add to the database。" });
   } catch (error) {
     res
@@ -171,18 +169,47 @@ app.get("/user/:userId/visited-izakayas", async (req, res) => {
   const userId = req.params.userId;
 
   try {
-    // 'visited_restaurants'テーブルから'user_id'に一致する'restaurant_id'のみを取得
-    const visitedRestaurantIds = await knex("visited_restaurants")
+    // 'visited_restaurants'テーブルから'user_id'に一致する'restaurant_id'を取得
+    const visitedRestaurantIdsandscore = await knex("visited_restaurants")
       .where("user_id", userId)
-      .select("restaurant_id");
-    // 結果を返す
-    res.json(visitedRestaurantIds);
+      .select("restaurant_id","rating");
+    res.json(visitedRestaurantIdsandscore);
   } catch (error) {
     // エラー
     res.status(500).send("Internal Server Error", error);
   }
 });
 
+//ID + resutaurant(izakaya)ID => change rate
+app.put("/user/:userId/restaurant/:restaurantId/rate", async (req, res) => {
+  const { userId, restaurantId } = req.params;
+  const { rating } = req.body; //using text or selectbox
+  try {
+    await knex("visited_restaurants")
+      .where({ user_id: userId, restaurant_id: restaurantId })
+      .update({ rating: rating });
+
+    res.json({ message: "updated successful." }); 
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ message: "Failed to update", error: error.message });
+  }
+});
+
+//delete hisoty
+app.delete("/user/:userId/restaurant/:restaurantId", async (req, res) => {
+  const { userId, restaurantId } = req.params; 
+  try {
+    await knex("visited_restaurants")
+      .where({ user_id: userId, restaurant_id: restaurantId })
+      .del(); 
+    res.json({ message: "Visit record delete success." });
+  } catch (error) {
+    res.status(500).json({ message: "Failed to delete", error: error.message });
+  }
+});
+
+//get izakaya info by id
 app.get("/search-by-id/:restaurantId", async (req, res) => {
   const { restaurantId } = req.params;
 
@@ -191,11 +218,13 @@ app.get("/search-by-id/:restaurantId", async (req, res) => {
     const response = await axios.get(url);
     res.json(response.data);
   } catch (error) {
-    console.error("Error fetching restaurant data:", error);
+    console.error("Error fetching:", error);
     res.status(500).send("Internal Server Error");
   }
 });
 
+
+//for testing server endpoint
 app.get("/test", async (req, res) => {
   res.status(200).json({ message: "add。" });
   console.log("test");
@@ -203,12 +232,12 @@ app.get("/test", async (req, res) => {
 
 app.get("/testfordb", async (req, res) => {
   try {
-    const visitedRestaurantIds = await knex("users").select(username);
-    res.json(visitedRestaurantIds);
-  } catch (err) {
+    const listOfusers = await knex("users").select(username);
+    res.json(listOfusers);
+  } catch (error) {
     // エラー
     res.status(500).send("Internal Server Error");
-    console.log(err);
+    console.log(error);
   }
 });
 
