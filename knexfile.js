@@ -1,6 +1,6 @@
 // Update with your config settings.
 require('dotenv').config({ path:'./.env.local'});
-
+const pg = require('pg');
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
