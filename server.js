@@ -17,20 +17,7 @@ const app = express();
 // console.log(process.env.PRODUCTION_USER)
 // console.log(process.env.PRODUCTION_DB)
 
-
-app.use(
-  cors({
-    origin: [
-      "https://solo-pj-front-n23wqu793-unnshoyuukou4515s-projects.vercel.app",
-      "https://solo-pj-front.vercel.app",
-      "http://localhost:3000",
-      "http://localhost:5173",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true
-  })
-);
+app.use(cors())
 //  '' '' '' '' ''
 // USING MIDDLEWARE
 app.use(express.json());
