@@ -2,7 +2,7 @@
 require("dotenv").config({ path: "./.env.local" });
 const express = require("express");
 const knexConfig = require("./knexfile.js");
-const knex = require("knex")(knexConfig.development);
+const knex = require("knex");
 const bodyParser = require("body-parser");
 const axios = require("axios");
 const cookieParser = require("cookie-parser");
@@ -89,6 +89,7 @@ app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
     // Retrieve user from the database
+    console.log("received")
     const user = await knex("users").where({ username }).first();
     if (!user) {
       return res.status(401).send("Invalid Username or Password");
