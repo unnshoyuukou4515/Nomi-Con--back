@@ -18,6 +18,19 @@ const app = express();
 // console.log(process.env.PRODUCTION_DB)
 
 app.use(cors())
+// app.use(
+//   cors({
+//     origin: [
+//       "https://solo-pj-front-n23wqu793-unnshoyuukou4515s-projects.vercel.app",
+//       "https://solo-pj-front.vercel.app",
+//       "http://localhost:3000",
+//       "http://localhost:5173",
+//     ],
+//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+//     allowedHeaders: ["Content-Type", "Authorization"],
+//     credentials: true
+//   })
+// );
 //  '' '' '' '' ''
 // USING MIDDLEWARE
 app.use(express.json());
@@ -109,7 +122,7 @@ const fetchIzakayaRestaurants = async (latitude, longitude) => {
   };
 
   const response = await axios.get(HOTPEPPER_API_URL, { params });
-  // 居酒屋のコード はG001 barはG012 G002 はバー
+  // 居酒屋のコード はG001 barはG012 G002 
   const izakayas = response.data.results.shop.filter(
     (shop) =>
       shop.genre.code === "G001" ||
