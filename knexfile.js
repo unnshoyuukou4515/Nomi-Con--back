@@ -8,7 +8,7 @@ module.exports = {
   production: {
     client: 'pg',
     connection: {
-      connectionString: process.env.DB_URL, 
+      connectionString: process.env.DATABASE_URL, 
       ssl: { rejectUnauthorized: false } 
     },
     pool: {
@@ -31,7 +31,7 @@ module.exports = {
       user:     process.env.DEVELOPMENT_USER,
       password: process.env.DEVELOPMENT_PASSWORD,
       host:     process.env.DEVELOPMENT_HOST,
-    
+      port:     process.env.DEVELOPMENT_PORT
     },
     migrations: {
       directory: __dirname + '/db/migrations'
