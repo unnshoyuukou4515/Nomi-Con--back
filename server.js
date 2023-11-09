@@ -207,7 +207,7 @@ app.get("/test", async (req, res) => {
 
 app.get("/testfordb", async (req, res) => {
   try {
-    const visitedRestaurantIds = await knex("users").select(
+    const visitedRestaurantIds = await knex("users").select(username
     );
     res.json(visitedRestaurantIds);
   } catch (err) {
