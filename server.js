@@ -1,8 +1,7 @@
 // IMPORTING MODULES
 require("dotenv").config({ path: "./.env.local" });
 const express = require("express");
-const knexConfig = require("./knexfile.js");
-const knex = require("knex");
+const knex = require("./db/knex.js")
 const bodyParser = require("body-parser");
 const axios = require("axios");
 const cookieParser = require("cookie-parser");
