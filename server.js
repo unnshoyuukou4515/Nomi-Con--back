@@ -1,7 +1,7 @@
 // IMPORTING MODULES
 require("dotenv").config({ path: "./.env.local" });
 const express = require("express");
-const knex = require("./db/knex.js")
+const knex = require("./db/knex.js");
 const bodyParser = require("body-parser");
 const axios = require("axios");
 const cookieParser = require("cookie-parser");
@@ -9,14 +9,9 @@ const cors = require("cors");
 const crypto = require("crypto");
 const app = express();
 
-// console.log("DB:", process.env.DEVELOPMENT_DB);
-// console.log('knexConfig', knexConfig.development); // development設定を出力してみる
-// console.log(process.env.DATABASE_URL); 
-// console.log(process.env.PRODUCTION_PASSWORD)
-// console.log(process.env.PRODUCTION_USER)
-// console.log(process.env.PRODUCTION_DB)
 
-app.use(cors())
+
+app.use(cors());
 // app.use(
 //   cors({
 //     origin: [
@@ -88,7 +83,7 @@ app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
     // Retrieve user from the database
-    console.log("received")
+    console.log("received");
     const user = await knex("users").where({ username }).first();
     if (!user) {
       return res.status(401).send("Invalid Username or Password");
@@ -103,13 +98,14 @@ app.post("/login", async (req, res) => {
     res.status(200).send({ userId: user.user_id, username: user.username });
   } catch (error) {
     res.status(500).send(`Server error: ${error.message}`);
-    console.log(error)
+    console.log(error);
   }
 });
 
 //HotPepper API
 const HOTPEPPER_API_KEY = "54ff6a2bad6c6ffb";
-const HOTPEPPER_API_URL = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/";
+const HOTPEPPER_API_URL =
+  "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/";
 
 // HotPepper APIにアクセスする関数
 const fetchIzakayaRestaurants = async (latitude, longitude) => {
@@ -122,7 +118,7 @@ const fetchIzakayaRestaurants = async (latitude, longitude) => {
   };
 
   const response = await axios.get(HOTPEPPER_API_URL, { params });
-  // 居酒屋のコード はG001 barはG012 G002 
+  // 居酒屋のコード はG001 barはG012 G002
   const izakayas = response.data.results.shop.filter(
     (shop) =>
       shop.genre.code === "G001" ||
@@ -183,7 +179,7 @@ app.get("/user/:userId/visited-izakayas", async (req, res) => {
     res.json(visitedRestaurantIds);
   } catch (error) {
     // エラー
-    res.status(500).send("Internal Server Error",error);
+    res.status(500).send("Internal Server Error", error);
   }
 });
 
@@ -207,18 +203,17 @@ app.get("/test", async (req, res) => {
 
 app.get("/testfordb", async (req, res) => {
   try {
-    const visitedRestaurantIds = await knex("users").select(username
-    );
+    const visitedRestaurantIds = await knex("users").select(username);
     res.json(visitedRestaurantIds);
   } catch (err) {
     // エラー
     res.status(500).send("Internal Server Error");
-    console.log(err)
+    console.log(err);
   }
 });
 
 // INITIATE SERVER
-const port = process.env.PORT || 3000; //ローカルのポート3000
+const port = process.env.PORT || 3000; 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
