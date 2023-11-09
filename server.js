@@ -122,7 +122,7 @@ const fetchIzakayaRestaurants = async (latitude, longitude) => {
   };
 
   const response = await axios.get(HOTPEPPER_API_URL, { params });
-  // 居酒屋のコード はG001 barはG012
+  // 居酒屋のコード はG001 barはG012 G002 はバー
   const izakayas = response.data.results.shop.filter(
     (shop) =>
       shop.genre.code === "G001" ||
@@ -181,9 +181,9 @@ app.get("/user/:userId/visited-izakayas", async (req, res) => {
       .select("restaurant_id");
     // 結果を返す
     res.json(visitedRestaurantIds);
-  } catch (err) {
+  } catch (error) {
     // エラー
-    res.status(500).send("Internal Server Error");
+    res.status(500).send("Internal Server Error",error);
   }
 });
 
@@ -208,7 +208,6 @@ app.get("/test", async (req, res) => {
 app.get("/testfordb", async (req, res) => {
   try {
     const visitedRestaurantIds = await knex("users").select(
-      
     );
     res.json(visitedRestaurantIds);
   } catch (err) {
