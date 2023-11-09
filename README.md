@@ -100,6 +100,7 @@ This needs to be run before installation to ensure everything is working properl
 ## Contact
 
 Your Name - Koichiro Yokoi
+E-mail    - unnshoyuukou4515@gmail.com
 
 Project Link: [https://github.com/unnshoyuukou4515/SoloPj-Back.git](https://github.com/unnshoyuukou4515/SoloPj-Back.git)
 Deployed Server :[https://nomi-con-backend.onrender.com](https://nomi-con-backend.onrender.com)
