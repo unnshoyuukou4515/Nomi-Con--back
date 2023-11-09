@@ -8,7 +8,7 @@ module.exports = {
   production: {
     client: 'pg',
     connection: {
-      connectionString: process.env.DATABASE_URL, 
+      connectionString: process.env.DB_URL, 
       ssl: { rejectUnauthorized: false } 
     },
     pool: {
@@ -28,10 +28,10 @@ module.exports = {
     client: 'pg', // PostgreSQLを指定
     connection: {
       database: "solo1",
-      user:     process.env.DEVELOPMENT_USER||"postgres",
-      password: process.env.DEVELOPMENT_PASSWORD||"4515",
-      host:     process.env.DEVELOPMENT_HOST||"localhost",
-      port:     process.env.DEVELOPMENT_PORT||"5432"
+      user:     process.env.DEVELOPMENT_USER,
+      password: process.env.DEVELOPMENT_PASSWORD,
+      host:     process.env.DEVELOPMENT_HOST,
+    
     },
     migrations: {
       directory: __dirname + '/db/migrations'
