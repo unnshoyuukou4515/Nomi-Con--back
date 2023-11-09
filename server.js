@@ -83,7 +83,7 @@ app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
     // Retrieve user from the database
-    console.log("received");
+    // console.log("received");
     const user = await knex("users").where({ username }).first();
     if (!user) {
       return res.status(401).send("Invalid Username or Password");

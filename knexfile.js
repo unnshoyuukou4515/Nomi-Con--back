@@ -26,7 +26,7 @@ module.exports = {
   },
 
   development: {
-    client: 'pg', // PostgreSQLを指定
+    client: 'pg', 
     connection: {
       database: "solo1",
       user:     process.env.DEVELOPMENT_USER,
