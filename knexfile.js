@@ -4,6 +4,7 @@ const pg = require('pg');
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
+//for ssl require 
 if (process.env.NODE_ENV === 'production') {
   pg.defaults.ssl = { rejectUnauthorized: false };
 }
