@@ -9,31 +9,13 @@ const cors = require("cors");
 const crypto = require("crypto");
 const app = express();
 
-
-
-app.use(cors());
-// app.use(
-//   cors({
-//     origin: [
-//       "https://solo-pj-front-n23wqu793-unnshoyuukou4515s-projects.vercel.app",
-//       "https://solo-pj-front.vercel.app",
-//       "http://localhost:3000",
-//       "http://localhost:5173",
-//     ],
-//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-//     allowedHeaders: ["Content-Type", "Authorization"],
-//     credentials: true
-//   })
-// );
-//  '' '' '' '' ''
 // USING MIDDLEWARE
 app.use(express.json());
 app.use(cookieParser());
 app.use(bodyParser.json());
-
+app.use(cors());
 // VERIFIED END POINTS
-// ACCOUNT CONTROLLER
-app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: true })); 
 
 // Helper functions
 function generateSessionToken() {
@@ -46,12 +28,10 @@ function hashPassword(password, salt) {
     .update(salt + password)
     .digest("hex");
 }
-
-// Routes
+//endpoints
 app.post("/createNewAccount", async (req, res) => {
   try {
     const { username, password, email } = req.body;
-    // Check if the username or email already exists
     const existingUser = await knex("users")
       .where({ username })
       .orWhere({ email })
@@ -71,7 +51,6 @@ app.post("/createNewAccount", async (req, res) => {
       salt,
       email,
     });
-
     res.status(201).send("Account created.");
   } catch (error) {
     res.status(500).send(`Server error: ${error.message}`);
@@ -82,18 +61,14 @@ app.post("/createNewAccount", async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
-    // Retrieve user from the database
-    // console.log("received");
     const user = await knex("users").where({ username }).first();
     if (!user) {
       return res.status(401).send("Invalid Username or Password");
     }
-    // Check password
     const hashedInputPassword = hashPassword(password, user.salt);
     if (hashedInputPassword !== user.hash_salted_password) {
       return res.status(401).send("Invalid Username or Password");
     }
-
     res.status(200).send({ userId: user.user_id, username: user.username });
   } catch (error) {
     res.status(500).send(`Server error: ${error.message}`);
@@ -103,8 +78,7 @@ app.post("/login", async (req, res) => {
 
 //HotPepper API
 const HOTPEPPER_API_KEY = "54ff6a2bad6c6ffb";
-const HOTPEPPER_API_URL =
-  "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/";
+const HOTPEPPER_API_URL = "http://webservice.recruit.co.jp/hotpepper/gourmet/v1/";
 
 // HotPepper APIにアクセスする関数
 const fetchIzakaya = async (latitude, longitude) => {
@@ -117,14 +91,12 @@ const fetchIzakaya = async (latitude, longitude) => {
   };
 
   const response = await axios.get(HOTPEPPER_API_URL, { params });
-  // 居酒屋のコード はG001 barはG012 G002
   const izakayas = response.data.results.shop.filter(
     (shop) =>
       shop.genre.code === "G001" ||
       shop.genre.code === "G012" ||
       shop.genre.code === "G002"
   );
-
   return izakayas;
 };
 
@@ -134,18 +106,16 @@ app.get("/izakayas", async (req, res) => {
   try {
     const izakayas = await fetchIzakaya(latitude, longitude);
     res.json(izakayas);
-    // console.log(izakayas)
   } catch (error) {
     res.status(500).json({ message: "server error", error: error.message });
+    console.log(error);
   }
 });
 
 //レストラン履歴をセーブする
 app.post("/markAsEaten", async (req, res) => {
   const { user_id, restaurant_id, rating, visited_at } = req.body;
-
   try {
-    // ユーザーIDがデータベースに存在するかチェック
     const user = await knex("users").where({ user_id }).first();
     if (!user) {
       return res.status(404).json({ message: "no user found" });
@@ -158,41 +128,39 @@ app.post("/markAsEaten", async (req, res) => {
     });
     res.status(200).json({ message: "add to the database。" });
   } catch (error) {
-    res
-      .status(500)
+    res.status(500)
       .json({ message: "faild to add in database", error: error.message });
+    console.log(error);
   }
 });
 
 // ユーザーの訪問済みレストランIDを取得するルート
 app.get("/user/:userId/visited-izakayas", async (req, res) => {
   const userId = req.params.userId;
-
   try {
-    // 'visited_restaurants'テーブルから'user_id'に一致する'restaurant_id'を取得
     const visitedRestaurantIdsandscore = await knex("visited_restaurants")
       .where("user_id", userId)
       .select("restaurant_id","rating");
     res.json(visitedRestaurantIdsandscore);
   } catch (error) {
-    // エラー
     res.status(500).send("Internal Server Error", error);
+    console.log(error)
   }
 });
 
 //ID + resutaurant(izakaya)ID => change rate
 app.put("/user/:userId/restaurant/:restaurantId/rate", async (req, res) => {
   const { userId, restaurantId } = req.params;
-  const { rating } = req.body; //using text or selectbox
+  const { rating } = req.body; 
   try {
     await knex("visited_restaurants")
       .where({ user_id: userId, restaurant_id: restaurantId })
       .update({ rating: rating });
-
-    res.json({ message: "updated successful." }); 
+      res.json({ message: "updated successful." }); 
   } catch (error) {
     console.log(error)
-    res.status(500).json({ message: "Failed to update", error: error.message });
+    res.status(500).json({ message: "Failed to update"});
+    console.log(error)
   }
 });
 
@@ -205,7 +173,8 @@ app.delete("/user/:userId/restaurant/:restaurantId", async (req, res) => {
       .del(); 
     res.json({ message: "Visit record delete success." });
   } catch (error) {
-    res.status(500).json({ message: "Failed to delete", error: error.message });
+    res.status(500).json({ message: "Failed to delete",});
+    console.log(error);
   }
 });
 
@@ -223,13 +192,13 @@ app.get("/search-by-id/:restaurantId", async (req, res) => {
   }
 });
 
-
 //for testing server endpoint
 app.get("/test", async (req, res) => {
   res.status(200).json({ message: "add。" });
   console.log("test");
 });
 
+//testforDatabaseConnection
 app.get("/testfordb", async (req, res) => {
   try {
     const listOfusers = await knex("users").select(username);
