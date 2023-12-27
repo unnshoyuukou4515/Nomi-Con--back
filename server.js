@@ -1,4 +1,4 @@
-// IMPORTING MODULES
+// IMPORTING MODULES 
 require("dotenv").config({ path: "./.env.local" });
 const express = require("express");
 const knex = require("./db/knex.js");
@@ -28,7 +28,7 @@ function hashPassword(password, salt) {
     .update(salt + password)
     .digest("hex");
 }
-//endpoints
+//Endpoints
 app.post("/createNewAccount", async (req, res) => {
   try {
     const { username, password, email } = req.body;
